@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role access",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["super_admin", "school_admin", "teacher", "student", "parent"] },
+        "schoolId": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["name", "email", "role", "schoolId"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student academic profile and details",
+      "type": "object",
+      "properties": {
+        "admissionNo": { "type": "string", "maxLength": 50 },
+        "rollNo": { "type": "string", "maxLength": 30 },
+        "grNumber": { "type": "string", "maxLength": 50 },
+        "name": { "type": "string", "maxLength": 100 },
+        "classId": { "type": "string", "maxLength": 50 },
+        "section": { "type": "string", "maxLength": 10 },
+        "feeStatus": { "type": "string", "enum": ["Paid", "Pending", "Overdue"] }
+      },
+      "required": ["admissionNo", "name", "classId", "section"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User account document"
+    },
+    "students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Student details document"
+    }
+  }
+}
