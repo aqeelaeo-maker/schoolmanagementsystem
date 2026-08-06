@@ -11,7 +11,9 @@ import {
   GraduationCap,
   Users,
   CheckCircle2,
-  Menu
+  Menu,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -34,7 +36,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     setActiveSchool,
     schools,
     setIsSearchOpen,
-    messages
+    messages,
+    theme,
+    toggleTheme
   } = useSchool();
 
   const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(false);
@@ -183,6 +187,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           )}
         </div>
+
+        {/* Light / Dark Mode Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all duration-200 cursor-pointer active:scale-90"
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 animate-in spin-in-180 duration-300" />
+          ) : (
+            <Moon className="w-4 h-4 text-slate-600 dark:text-slate-300 animate-in spin-in-180 duration-300" />
+          )}
+        </button>
 
         {/* Notifications Bell */}
         <div className="relative">

@@ -83,6 +83,11 @@ interface SchoolContextType {
   messages: CommunicationMessage[];
   auditLogs: AuditLog[];
   
+  // Theme State
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  toggleTheme: () => void;
+
   // UI & Modals State
   searchQuery: string;
   setSearchQuery: (q: string) => void;
@@ -136,6 +141,25 @@ export const SchoolProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [transactions, setTransactions] = useState<AccountTransaction[]>(INITIAL_TRANSACTIONS);
   const [messages, setMessages] = useState<CommunicationMessage[]>(INITIAL_MESSAGES);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
+
+  // Theme state
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('educore_theme');
+    return saved === 'dark' || saved === 'light' ? saved : 'light';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('educore_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   // Global Search & Toasts
   const [searchQuery, setSearchQuery] = useState('');
@@ -456,6 +480,9 @@ export const SchoolProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         transactions,
         messages,
         auditLogs,
+        theme,
+        setTheme,
+        toggleTheme,
         searchQuery,
         setSearchQuery,
         isSearchOpen,
