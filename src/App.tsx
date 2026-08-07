@@ -126,8 +126,8 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-[#F8FAFC] dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 overflow-hidden">
-      {/* Sidebar Navigation */}
+    <div className="flex h-screen w-full bg-[#F1F5F9] font-sans text-slate-900 overflow-hidden">
+      {/* Sidebar Navigation (Left Panel - Dark Gray) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={handleNavigateTab}
@@ -137,33 +137,33 @@ const MainLayout: React.FC = () => {
         setIsOpenMobile={setIsMobileSidebarOpen}
       />
 
-      {/* Main Content Body */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Top Navbar */}
+      {/* Main Content Body (Right Down Panel) */}
+      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#F1F5F9]">
+        {/* Top Navbar (Top Panel - Dark Gray) */}
         <Navbar
           onToggleSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
           onOpenAIChat={() => setIsAIChatOpen(true)}
           onOpenCopilotModule={() => handleNavigateTab('ai_copilot')}
         />
 
-        {/* Scrollable View Area */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6">
+        {/* Scrollable View Area (White & Light Gray Palette) */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-6 bg-slate-100/70">
           {renderActiveTabContent()}
         </main>
 
-        {/* Sleek Bottom Micro-Interaction Status Bar */}
-        <footer className="h-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-6 lg:px-8 flex items-center justify-between text-[10px] font-bold text-slate-400 tracking-widest shrink-0">
+        {/* Sleek Bottom Status Bar (White & Light Gray) */}
+        <footer className="h-10 bg-white border-t border-slate-200/80 px-6 lg:px-8 flex items-center justify-between text-[10px] font-bold text-slate-500 tracking-widest shrink-0 shadow-2xs">
           <div className="flex items-center gap-6 uppercase">
-            <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+            <span className="flex items-center gap-1.5 text-emerald-600">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> SYSTEM UPTIME: 99.99%
             </span>
             <span className="hidden sm:inline text-slate-400">LAST BACKUP: 2 MINS AGO</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors">DOCS</span>
-            <span className="hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors">SUPPORT</span>
-            <span className="text-slate-200 dark:text-slate-700">|</span>
-            <span className="text-slate-700 dark:text-slate-300 font-mono">VER 2026.08.06</span>
+            <span className="hover:text-indigo-600 cursor-pointer transition-colors">DOCS</span>
+            <span className="hover:text-indigo-600 cursor-pointer transition-colors">SUPPORT</span>
+            <span className="text-slate-300">|</span>
+            <span className="text-slate-600 font-mono">VER 2026.08.06</span>
           </div>
         </footer>
       </div>

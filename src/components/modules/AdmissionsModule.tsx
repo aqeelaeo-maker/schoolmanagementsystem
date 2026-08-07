@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSchool } from '../../context/SchoolContext';
-import { UserPlus, CheckCircle2, QrCode, Sparkles, Printer } from 'lucide-react';
+import { UserPlus, CheckCircle2, QrCode, Sparkles, Printer, Upload, Camera, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Student } from '../../types';
 
 export const AdmissionsModule: React.FC = () => {
   const { addStudent, classes, routes, hostelRooms } = useSchool();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +25,53 @@ export const AdmissionsModule: React.FC = () => {
     photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300'
   });
 
+  const [photoFileName, setPhotoFileName] = useState<string>('');
+  const [isDragging, setIsDragging] = useState(false);
   const [admittedStudent, setAdmittedStudent] = useState<Student | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size exceeds 5MB. Please choose a smaller image.');
+        return;
+      }
+      setPhotoFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setFormData((prev) => ({ ...prev, photo: reader.result as string }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setPhotoFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setFormData((prev) => ({ ...prev, photo: reader.result as string }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +107,94 @@ export const AdmissionsModule: React.FC = () => {
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            {/* Student Profile Picture Upload */}
+            <div className="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-200 dark:border-slate-600/80">
+              <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-2.5 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Camera className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Student Profile Picture
+                </span>
+                <span className="text-[10px] font-normal text-slate-400">Official Badge & ID Card Photo</span>
+              </label>
+
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                {/* Avatar Preview */}
+                <div className="relative group shrink-0">
+                  <img
+                    src={formData.photo}
+                    alt="Student Preview"
+                    className="w-20 h-20 rounded-2xl object-cover ring-4 ring-indigo-500/30 shadow-md bg-slate-200 dark:bg-slate-800"
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                    title="Change Photo"
+                  >
+                    <Upload className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+
+                {/* File Upload Box */}
+                <div className="flex-1 w-full space-y-2">
+                  <div
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`p-3 rounded-xl border-2 border-dashed text-center transition-all ${
+                      isDragging
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 scale-[1.01]'
+                        : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
+                    }`}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <div className="flex items-center justify-center gap-2 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer text-xs"
+                      >
+                        <Upload className="w-3.5 h-3.5" /> Upload Student Picture
+                      </button>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400">or drag & drop file here</span>
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1">Supports JPG, PNG, WEBP (Max 5MB)</p>
+                  </div>
+
+                  {photoFileName ? (
+                    <div className="flex items-center justify-between px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 rounded-lg text-[11px] border border-emerald-200 dark:border-emerald-800/50">
+                      <span className="truncate font-medium flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> Photo Uploaded: <span className="font-bold">{photoFileName}</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhotoFileName('');
+                          setFormData((prev) => ({
+                            ...prev,
+                            photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300'
+                          }));
+                        }}
+                        className="p-1 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                        title="Remove uploaded photo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-[10px] text-slate-400 pl-1">
+                      <ImageIcon className="w-3 h-3 text-indigo-500" />
+                      <span>Upload student passport-size picture for official records and QR badge.</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Student Full Name *</label>

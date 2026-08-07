@@ -99,6 +99,7 @@ interface SchoolContextType {
   
   // Actions
   addStudent: (student: Omit<Student, 'id' | 'admissionNo' | 'qrCode' | 'attendancePercentage' | 'gpa' | 'feeStatus'>) => Student;
+  addTeacher: (teacher: Omit<Teacher, 'id' | 'employeeId' | 'status'>) => void;
   markAttendance: (record: Omit<AttendanceRecord, 'id'>) => void;
   addHomework: (hw: Omit<Homework, 'id' | 'assignedDate' | 'totalSubmissions'>) => void;
   submitHomework: (sub: Omit<HomeworkSubmission, 'id' | 'submissionDate' | 'status'>) => void;
@@ -232,6 +233,19 @@ export const SchoolProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     addAuditLog(`Enrolled student ${newStudent.name} (${admNo})`, 'Admissions');
     addToast('success', 'Admission Confirmed', `Generated Admission No: ${admNo} & ID Card with QR!`);
     return newStudent;
+  };
+
+  // Add Teacher / Faculty Member
+  const addTeacher = (teacherData: Omit<Teacher, 'id' | 'employeeId' | 'status'>) => {
+    const newTeacher: Teacher = {
+      ...teacherData,
+      id: `tch-${Date.now()}`,
+      employeeId: `EMP-T-${Math.floor(100 + Math.random() * 900)}`,
+      status: 'active'
+    };
+    setTeachers((prev) => [newTeacher, ...prev]);
+    addAuditLog(`Added teacher ${newTeacher.name}`, 'Teachers & Staff');
+    addToast('success', 'Faculty Member Added', `Registered ${newTeacher.name} (${newTeacher.designation})`);
   };
 
   // Mark Attendance
@@ -491,6 +505,7 @@ export const SchoolProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         addToast,
         removeToast,
         addStudent,
+        addTeacher,
         markAttendance,
         addHomework,
         submitHomework,
