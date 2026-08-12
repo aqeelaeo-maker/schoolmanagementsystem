@@ -10,6 +10,7 @@ import {
   Users
 } from 'lucide-react';
 import { NavTab } from '../Sidebar';
+import { RealTimeLiveBar } from '../common/RealTimeLiveBar';
 
 interface TeacherDashboardProps {
   onNavigateTab: (tab: NavTab) => void;
@@ -24,28 +25,31 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in">
+      {/* Real-Time Live Status */}
+      <RealTimeLiveBar />
+
       {/* Top Banner */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30">
-            Teacher Faculty Portal
+          <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1.5 w-fit">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Teacher Faculty Portal
           </span>
           <h2 className="text-2xl font-black mt-2 tracking-tight">Welcome, {currentUser.name} 👨‍🏫</h2>
           <p className="text-xs text-blue-200 mt-1 max-w-xl">
-            You have 3 scheduled periods today (Physics Grade 10-A, Chemistry Lab Grade 11-A). 2 homework assignments pending review.
+            Live portal active. Currently overseeing <strong className="text-white">{students.length}</strong> students across assigned periods. <strong className="text-white">{homeworks.length}</strong> active homework tasks tracked.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => onNavigateTab('homework')}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-blue-500 hover:bg-blue-400 text-white rounded-2xl shadow-lg shadow-blue-500/30 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-blue-500 hover:bg-blue-400 text-white rounded-2xl shadow-lg shadow-blue-500/30 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Assign Homework</span>
           </button>
           <button
             onClick={onOpenCopilot}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl shadow-lg transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl shadow-lg transition-all cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>AI Lesson Assistant</span>
@@ -66,7 +70,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-2">Grade 10-A, 11-A</h3>
-          <p className="text-xs text-indigo-600 font-semibold mt-1">64 Total Assigned Students</p>
+          <p className="text-xs text-indigo-600 font-semibold mt-1">{students.length} Assigned Students</p>
         </div>
 
         <div
@@ -80,7 +84,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-2">{homeworks.length} Active</h3>
-          <p className="text-xs text-blue-600 font-semibold mt-1">52 Submissions Received</p>
+          <p className="text-xs text-blue-600 font-semibold mt-1">Live Submissions Sync</p>
         </div>
 
         <div
@@ -119,13 +123,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Grade 10-A Student Roster</h3>
             <button
               onClick={() => onNavigateTab('attendance')}
-              className="text-xs text-indigo-600 font-bold hover:underline flex items-center gap-1"
+              className="text-xs text-indigo-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <CalendarCheck className="w-3.5 h-3.5" /> Quick Attendance
             </button>
           </div>
           <div className="space-y-2">
-            {students.slice(0, 4).map((std) => (
+            {students.slice(0, 5).map((std) => (
               <div
                 key={std.id}
                 className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-700/40 flex items-center justify-between text-xs"
@@ -155,19 +159,19 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <div className="space-y-2">
               <button
                 onClick={onOpenCopilot}
-                className="w-full text-left p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 text-indigo-900 dark:text-indigo-200 text-xs font-semibold"
+                className="w-full text-left p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 text-indigo-900 dark:text-indigo-200 text-xs font-semibold cursor-pointer"
               >
                 📝 Generate Exam Question Paper
               </button>
               <button
                 onClick={onOpenCopilot}
-                className="w-full text-left p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-900 dark:text-blue-200 text-xs font-semibold"
+                className="w-full text-left p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-900 dark:text-blue-200 text-xs font-semibold cursor-pointer"
               >
                 💬 Draft Parent Reply Assistant
               </button>
               <button
                 onClick={onOpenCopilot}
-                className="w-full text-left p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-900 dark:text-emerald-200 text-xs font-semibold"
+                className="w-full text-left p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-900 dark:text-emerald-200 text-xs font-semibold cursor-pointer"
               >
                 🌟 Auto-Write Report Card Remarks
               </button>

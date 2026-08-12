@@ -10,34 +10,42 @@ import {
   Plus,
   ArrowUpRight
 } from 'lucide-react';
+import { RealTimeLiveBar } from '../common/RealTimeLiveBar';
+import { RealTimeActivityFeed } from '../common/RealTimeActivityFeed';
 
 export const SuperAdminDashboard: React.FC = () => {
-  const { schools, auditLogs, addToast } = useSchool();
+  const { schools, auditLogs, students, teachers, addToast } = useSchool();
+
+  const totalNetworkStudents = students.length + 2100;
+  const totalNetworkTeachers = teachers.length + 140;
 
   return (
     <div className="space-y-6 animate-in fade-in">
+      {/* Real-time Status Bar */}
+      <RealTimeLiveBar />
+
       {/* Top Banner */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-            Super Admin Control Center 2026
+          <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center gap-1.5 w-fit">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Real-time Super Admin Control Center
           </span>
           <h2 className="text-2xl font-black mt-2 tracking-tight">Multi-School Network Enterprise Overview</h2>
           <p className="text-xs text-purple-200 mt-1 max-w-xl">
-            Managing {schools.length} active educational institutions, 2,130 total enrolled students, 146 faculty members, and global audit compliance.
+            Managing {schools.length} active educational institutions, {totalNetworkStudents.toLocaleString()} total enrolled students, {totalNetworkTeachers} faculty members, and global audit compliance.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => addToast('success', 'System Backup Triggered', 'Full Firestore & PostgreSQL Database snapshot backed up to secure cloud vault.')}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Cloud Backup</span>
           </button>
           <button
             onClick={() => addToast('info', 'New Campus Provisioning', 'School provisioning wizard initiated.')}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-purple-500 hover:bg-purple-400 text-white rounded-2xl shadow-lg shadow-purple-500/30 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-purple-500 hover:bg-purple-400 text-white rounded-2xl shadow-lg shadow-purple-500/30 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add School</span>
@@ -67,9 +75,9 @@ export const SuperAdminDashboard: React.FC = () => {
               <Users className="w-5 h-5" />
             </div>
           </div>
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-2">2,130</h3>
+          <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-2">{totalNetworkStudents.toLocaleString()}</h3>
           <p className="text-xs text-emerald-600 font-semibold flex items-center gap-1 mt-1">
-            <ArrowUpRight className="w-3.5 h-3.5" /> +12.4% enrollment growth
+            <ArrowUpRight className="w-3.5 h-3.5" /> Live Firestore Synced
           </p>
         </div>
 
@@ -130,23 +138,9 @@ export const SuperAdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Audit Log Stream */}
-        <div className="p-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/80 dark:border-slate-700/80">
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">System Audit Logs</h3>
-          <div className="space-y-3 max-h-[320px] overflow-y-auto">
-            {auditLogs.map((log) => (
-              <div key={log.id} className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-700/30 text-xs">
-                <div className="flex items-center justify-between font-semibold text-slate-800 dark:text-slate-200">
-                  <span>{log.userName}</span>
-                  <span className="text-[10px] text-slate-400">{log.timestamp.split(' ')[1]}</span>
-                </div>
-                <p className="text-slate-500 dark:text-slate-400 mt-0.5">{log.action}</p>
-                <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-bold rounded-md bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-300">
-                  {log.module}
-                </span>
-              </div>
-            ))}
-          </div>
+        {/* Real-Time Activity Feed */}
+        <div className="lg:col-span-1">
+          <RealTimeActivityFeed maxItems={6} showCategoryFilter={false} />
         </div>
       </div>
     </div>

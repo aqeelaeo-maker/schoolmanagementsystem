@@ -10,6 +10,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { NavTab } from '../Sidebar';
+import { RealTimeLiveBar } from '../common/RealTimeLiveBar';
 
 interface ParentDashboardProps {
   onNavigateTab: (tab: NavTab) => void;
@@ -27,6 +28,9 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in">
+      {/* Real-Time Live Status Bar */}
+      <RealTimeLiveBar />
+
       {/* Top Banner */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-amber-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
@@ -36,8 +40,8 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({
             className="w-16 h-16 rounded-2xl object-cover ring-4 ring-amber-400/30 shadow-md"
           />
           <div>
-            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
-              Parent Guardian Portal 2026
+            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Real-time Parent Guardian Portal 2026
             </span>
             <h2 className="text-2xl font-black mt-1 tracking-tight">Parent Portal • {child.name}</h2>
             <p className="text-xs text-amber-200 mt-0.5">
@@ -48,14 +52,14 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => onNavigateTab('fees')}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-white rounded-2xl shadow-lg transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-white rounded-2xl shadow-lg transition-all cursor-pointer"
           >
             <CreditCard className="w-4 h-4" />
             <span>Pay Fee Voucher (${feeVoucher.totalAmount})</span>
           </button>
           <button
             onClick={onOpenCopilot}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>AI Progress Advisor</span>

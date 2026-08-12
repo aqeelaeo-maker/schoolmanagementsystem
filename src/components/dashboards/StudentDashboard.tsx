@@ -11,6 +11,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { NavTab } from '../Sidebar';
+import { RealTimeLiveBar } from '../common/RealTimeLiveBar';
 
 interface StudentDashboardProps {
   onNavigateTab: (tab: NavTab) => void;
@@ -28,6 +29,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in">
+      {/* Real-time Status Bar */}
+      <RealTimeLiveBar />
+
       {/* Student Welcome Banner */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-cyan-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
@@ -37,8 +41,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             className="w-16 h-16 rounded-2xl object-cover ring-4 ring-cyan-400/30 shadow-md"
           />
           <div>
-            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-              Student Academic Portal 2026
+            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Real-time Student Academic Portal 2026
             </span>
             <h2 className="text-2xl font-black mt-1 tracking-tight">Welcome, {student.name} 🎓</h2>
             <p className="text-xs text-cyan-200 mt-0.5">
@@ -49,14 +53,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => onNavigateTab('exams')}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-white rounded-2xl shadow-lg transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-white rounded-2xl shadow-lg transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Download Result Card</span>
           </button>
           <button
             onClick={onOpenCopilot}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 backdrop-blur-md transition-all cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>AI Study Tutor</span>
