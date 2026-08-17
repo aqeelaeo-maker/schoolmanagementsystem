@@ -12,8 +12,8 @@ export const FeesModule: React.FC = () => {
 
   const filtered = fees.filter(
     (f) =>
-      f.studentName.toLowerCase().includes(search.toLowerCase()) ||
-      f.voucherNo.toLowerCase().includes(search.toLowerCase())
+      (f.studentName || '').toLowerCase().includes(search.toLowerCase()) ||
+      (f.voucherNo || '').toLowerCase().includes(search.toLowerCase())
   );
 
   const handlePay = (e: React.FormEvent) => {

@@ -55,19 +55,23 @@ export const RealTimeActivityFeed: React.FC<RealTimeActivityFeedProps> = ({
       let icon = <Activity className="w-3.5 h-3.5 text-indigo-500" />;
       let badgeColor = 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300';
 
-      if (log.category.includes('Admissions')) {
+      const logCategory = log.module || (log as any).category || '';
+      const logUser = log.userName || (log as any).user || 'System';
+      const logTime = log.timestamp || 'Just now';
+
+      if (logCategory.includes('Admissions') || logCategory.includes('Student')) {
         category = 'Admissions';
         icon = <GraduationCap className="w-3.5 h-3.5 text-purple-500" />;
         badgeColor = 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300';
-      } else if (log.category.includes('Attendance')) {
+      } else if (logCategory.includes('Attendance')) {
         category = 'Attendance';
         icon = <UserCheck className="w-3.5 h-3.5 text-emerald-500" />;
         badgeColor = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300';
-      } else if (log.category.includes('Fees') || log.category.includes('Financial')) {
+      } else if (logCategory.includes('Fees') || logCategory.includes('Financial') || logCategory.includes('Finance')) {
         category = 'Fees';
         icon = <CreditCard className="w-3.5 h-3.5 text-amber-500" />;
         badgeColor = 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300';
-      } else if (log.category.includes('Homework')) {
+      } else if (logCategory.includes('Homework') || logCategory.includes('Academics')) {
         category = 'Homework';
         icon = <FileText className="w-3.5 h-3.5 text-blue-500" />;
         badgeColor = 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300';
@@ -76,8 +80,8 @@ export const RealTimeActivityFeed: React.FC<RealTimeActivityFeedProps> = ({
       items.push({
         id: log.id,
         title: log.action,
-        subtitle: `User: ${log.user} • IP: ${log.ipAddress}`,
-        timestamp: log.timestamp.includes(' ') ? log.timestamp.split(' ')[1] : log.timestamp,
+        subtitle: `User: ${logUser} • IP: ${log.ipAddress || '127.0.0.1'}`,
+        timestamp: logTime.includes(' ') ? logTime.split(' ')[1] : logTime,
         category,
         icon,
         badgeColor

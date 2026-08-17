@@ -22,9 +22,9 @@ export const StudentsModule: React.FC = () => {
 
   const filtered = students.filter((s) => {
     const matchesSearch =
-      s.name.toLowerCase().includes(search.toLowerCase()) ||
-      s.admissionNo.toLowerCase().includes(search.toLowerCase()) ||
-      s.rollNo.toLowerCase().includes(search.toLowerCase());
+      (s.name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (s.admissionNo || '').toLowerCase().includes(search.toLowerCase()) ||
+      (s.rollNo || '').toLowerCase().includes(search.toLowerCase());
 
     const matchesClass = selectedClass === 'All' || s.className === selectedClass;
     return matchesSearch && matchesClass;

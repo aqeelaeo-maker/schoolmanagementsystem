@@ -110,7 +110,7 @@ export const RealTimeLiveBar: React.FC = () => {
         <div className="flex-1 max-w-lg bg-slate-950/70 rounded-xl px-3 py-1.5 border border-slate-800 flex items-center gap-2 overflow-hidden">
           <Radio className="w-3.5 h-3.5 text-indigo-400 shrink-0 animate-pulse" />
           <div className="truncate text-[11px]">
-            <span className="font-bold text-indigo-300 mr-1.5">[{currentLog.category}]:</span>
+            <span className="font-bold text-indigo-300 mr-1.5">[{currentLog.module || (currentLog as any).category || 'System'}]:</span>
             <span className="text-slate-300">{currentLog.action}</span>
           </div>
           <span className="text-[9px] text-slate-500 shrink-0 font-mono">({lastSync})</span>

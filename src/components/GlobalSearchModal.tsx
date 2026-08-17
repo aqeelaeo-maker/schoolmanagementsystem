@@ -42,36 +42,36 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ onNavigate
   const filteredStudents = query
     ? students.filter(
         (s) =>
-          s.name.toLowerCase().includes(query) ||
-          s.admissionNo.toLowerCase().includes(query) ||
-          s.rollNo.toLowerCase().includes(query) ||
-          s.className.toLowerCase().includes(query)
+          (s.name || '').toLowerCase().includes(query) ||
+          (s.admissionNo || '').toLowerCase().includes(query) ||
+          (s.rollNo || '').toLowerCase().includes(query) ||
+          (s.className || '').toLowerCase().includes(query)
       )
     : students.slice(0, 3);
 
   const filteredTeachers = query
     ? teachers.filter(
         (t) =>
-          t.name.toLowerCase().includes(query) ||
-          t.department.toLowerCase().includes(query) ||
-          t.subjects.some((sub) => sub.toLowerCase().includes(query))
+          (t.name || '').toLowerCase().includes(query) ||
+          (t.department || '').toLowerCase().includes(query) ||
+          (t.subjects && t.subjects.some((sub) => (sub || '').toLowerCase().includes(query)))
       )
     : teachers.slice(0, 2);
 
   const filteredBooks = query
     ? books.filter(
         (b) =>
-          b.title.toLowerCase().includes(query) ||
-          b.author.toLowerCase().includes(query) ||
-          b.isbn.toLowerCase().includes(query)
+          (b.title || '').toLowerCase().includes(query) ||
+          (b.author || '').toLowerCase().includes(query) ||
+          (b.isbn || '').toLowerCase().includes(query)
       )
     : books.slice(0, 2);
 
   const filteredFees = query
     ? fees.filter(
         (f) =>
-          f.studentName.toLowerCase().includes(query) ||
-          f.voucherNo.toLowerCase().includes(query)
+          (f.studentName || '').toLowerCase().includes(query) ||
+          (f.voucherNo || '').toLowerCase().includes(query)
       )
     : fees.slice(0, 2);
 

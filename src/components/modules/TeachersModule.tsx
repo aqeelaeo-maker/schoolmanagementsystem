@@ -106,10 +106,10 @@ export const TeachersModule: React.FC = () => {
 
   const filtered = teachers.filter((t) => {
     const matchesSearch =
-      t.name.toLowerCase().includes(search.toLowerCase()) ||
-      t.department.toLowerCase().includes(search.toLowerCase()) ||
-      t.designation.toLowerCase().includes(search.toLowerCase()) ||
-      (t.subjects && t.subjects.some((sub) => sub.toLowerCase().includes(search.toLowerCase())));
+      (t.name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (t.department || '').toLowerCase().includes(search.toLowerCase()) ||
+      (t.designation || '').toLowerCase().includes(search.toLowerCase()) ||
+      (t.subjects && t.subjects.some((sub) => (sub || '').toLowerCase().includes(search.toLowerCase())));
 
     const matchesDept = selectedDept === 'All' || t.department === selectedDept;
     const matchesStatus = selectedStatus === 'All' || t.status === selectedStatus;

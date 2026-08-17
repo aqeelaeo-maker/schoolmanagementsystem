@@ -97,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'settings', label: 'System Settings', icon: <Settings className="w-4 h-4" />, roles: ['super_admin', 'school_admin'] },
   ];
 
-  const filteredItems = menuItems.filter((item) => item.roles.includes(activeRole));
+  const filteredItems = menuItems.filter((item) => (item.roles || []).includes(activeRole));
 
   return (
     <>
@@ -111,31 +111,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen bg-slate-900 text-slate-300 border-r border-slate-800 transition-all duration-300 flex flex-col justify-between ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen bg-[#007BA7] text-white border-r border-[#00688E] transition-all duration-300 flex flex-col justify-between shadow-lg ${
           isCollapsed ? 'w-20' : 'w-64'
         } ${isOpenMobile ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Top Branding Header */}
-        <div className="p-4 flex items-center justify-between border-b border-slate-800/80">
+        <div className="p-4 flex items-center justify-between border-b border-white/15">
           {!isCollapsed && (
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-base shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-white text-[#007BA7] flex items-center justify-center font-black text-base shadow-sm">
                 E
               </div>
-              <span className="font-bold text-white text-base tracking-tight">
-                EduPulse <span className="text-cyan-400">AI</span>
+              <span className="font-extrabold text-white text-base tracking-tight">
+                EduPulse <span className="text-cyan-200">AI</span>
               </span>
             </div>
           )}
           {isCollapsed && (
-            <div className="w-10 h-10 mx-auto rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-10 h-10 mx-auto rounded-xl bg-white text-[#007BA7] flex items-center justify-center font-black text-lg shadow-sm">
               E
             </div>
           )}
 
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+            className="hidden lg:flex p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -143,9 +143,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Navigation List */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 scrollbar-thin scrollbar-thumb-slate-700">
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 scrollbar-thin scrollbar-thumb-white/20">
           {!isCollapsed && (
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Main Navigation</p>
+            <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider px-3 mb-2">Main Navigation</p>
           )}
 
           {filteredItems.map((item) => {
@@ -157,20 +157,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   setActiveTab(item.id);
                   if (setIsOpenMobile) setIsOpenMobile(false);
                 }}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all relative ${
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all relative cursor-pointer ${
                   isActive
-                    ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-600/20'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-white text-[#007BA7] shadow-md font-bold'
+                    : 'text-white/85 hover:text-white hover:bg-white/10'
                 } ${isCollapsed ? 'justify-center px-0' : ''}`}
                 title={item.label}
               >
-                <div className={`${isActive ? 'text-white' : 'text-slate-400'}`}>{item.icon}</div>
+                <div className={`${isActive ? 'text-[#007BA7]' : 'text-white/90'}`}>{item.icon}</div>
 
                 {!isCollapsed && (
                   <div className="flex-1 flex items-center justify-between truncate">
                     <span className="truncate">{item.label}</span>
                     {item.badge && (
-                      <span className="ml-2 px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                      <span className={`ml-2 px-1.5 py-0.5 text-[9px] font-bold rounded-md ${
+                        isActive
+                          ? 'bg-[#007BA7]/10 text-[#007BA7] border border-[#007BA7]/20'
+                          : 'bg-white/20 text-white border border-white/30'
+                      }`}>
                         {item.badge}
                       </span>
                     )}
@@ -182,17 +186,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Bottom AI Assistant Card in Sidebar */}
-        <div className="p-3 mt-auto border-t border-slate-800">
+        <div className="p-3 mt-auto border-t border-white/15">
           {!isCollapsed ? (
-            <div className="p-4 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-600 rounded-2xl text-white relative overflow-hidden shadow-lg shadow-indigo-600/20">
+            <div className="p-4 bg-[#005F82] border border-white/20 rounded-2xl text-white relative overflow-hidden shadow-md">
               <div className="relative z-10">
-                <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1 flex items-center gap-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-200 mb-1 flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-amber-300" /> AI Assistant
                 </p>
-                <p className="text-xs font-medium leading-relaxed opacity-95">"Optimize Grade 10 timetable?"</p>
+                <p className="text-xs font-medium leading-relaxed text-white">"Optimize Grade 10 timetable?"</p>
                 <button
                   onClick={() => setActiveTab('ai_copilot')}
-                  className="mt-3 w-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 py-1.5 rounded-xl text-xs font-semibold text-white transition-all shadow-xs cursor-pointer"
+                  className="mt-3 w-full bg-white text-[#007BA7] hover:bg-cyan-50 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
                 >
                   Ask AI
                 </button>
@@ -202,10 +206,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ) : (
             <button
               onClick={() => setActiveTab('ai_copilot')}
-              className="w-10 h-10 mx-auto bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg cursor-pointer"
+              className="w-10 h-10 mx-auto bg-white text-[#007BA7] hover:bg-cyan-50 rounded-xl flex items-center justify-center font-bold shadow-md cursor-pointer"
               title="Ask AI Assistant"
             >
-              <Sparkles className="w-4 h-4 text-amber-300" />
+              <Sparkles className="w-4 h-4 text-[#007BA7]" />
             </button>
           )}
         </div>

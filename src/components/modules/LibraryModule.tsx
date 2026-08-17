@@ -9,9 +9,9 @@ export const LibraryModule: React.FC = () => {
 
   const filteredBooks = books.filter(
     (b) =>
-      b.title.toLowerCase().includes(search.toLowerCase()) ||
-      b.author.toLowerCase().includes(search.toLowerCase()) ||
-      b.isbn.toLowerCase().includes(search.toLowerCase())
+      (b.title || '').toLowerCase().includes(search.toLowerCase()) ||
+      (b.author || '').toLowerCase().includes(search.toLowerCase()) ||
+      (b.isbn || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
